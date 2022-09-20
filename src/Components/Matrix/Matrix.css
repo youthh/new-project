@@ -1,0 +1,50 @@
+.box__matrix{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    border-radius: 30px;
+    margin-top: 30px;
+}
+
+.box__matrix--title{
+    color: #fff;
+}
+
+.box__matrix-field{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1500px;
+    width: 100%;
+}
+
+.box__matrix-label{
+    margin-right: 10px;
+    color: #fff;
+}
+
+.box__matrix{
+    background-color: #8148e3;
+
+}
+
+.box__matrix--btn{
+    padding: 6px 10px;
+    border-radius: 10px;
+    outline: none;
+}
+
+.table_td{
+    background-color: #a779ee;
+    border-radius: 8px;
+
+    padding: 10px;
+}
+
+.table_head{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
