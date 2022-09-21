@@ -36,15 +36,23 @@
     outline: none;
 }
 
-.table_td{
-    background-color: #a779ee;
+.table{
     border-radius: 8px;
-
+    cursor: pointer;
     padding: 10px;
+    color: #fff;
+}
+
+.table_td{
+    background-color: #8f5ed9;
 }
 
 .table_head{
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+.table_sum{
+    background-color: #760ff8;
 }

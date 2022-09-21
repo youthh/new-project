@@ -1,8 +1,9 @@
 import React from 'react';
 import './Matrix.css'
+import {useSelector} from "react-redux";
+import {setAverage} from "../../slices/matrixSlice";
 
-const DrawMatrix = ({matrix, findAverage}) => {
-
+const DrawMatrix = ({matrix, findAverage, incrementCell, dispatch}) => {
     return (
         <div>
             {
@@ -24,16 +25,16 @@ const DrawMatrix = ({matrix, findAverage}) => {
                         {matrix.map((item, index) => {
                             index++
                             return (
-                                <tr>
+                                <tr key={index}>
                                     <td>{index}</td>
                                     {
                                         item.map((i) => {
-                                            return <>
-                                                <td key={i.id} className="table_td">{i.amount}</td>
-                                            </>
+                                            return <td onClick={() => dispatch(incrementCell(i))}
+                                                       key={i.id} className="table table_td">{i.amount}</td>
+
                                         })
                                     }
-                                    <td>
+                                    <td className="table table_sum">
                                         {
                                             item.reduce((prev, current) => {
                                                 return prev + current.amount
@@ -46,16 +47,25 @@ const DrawMatrix = ({matrix, findAverage}) => {
                         </tbody>
 
                         <tfoot>
-                        {
-                            <tr>
-                                <th>Avg</th>
-                                {
-                                    matrix[0].map((item, index) => {
-                                        return <th key={index}>{findAverage(index)}</th>;
-                                    })
-                                }
-                            </tr>
-                        }
+                        <tr>
+                            <th>Avg</th>
+                            {
+                                matrix[0].map((item, index) => {
+                                    return <th className="table table_sum" key={index}>{findAverage(index)}</th>;
+                                })
+                            }
+
+                            {
+                                <th className="table table_sum" >
+                                    {
+                                        matrix[0].reduce((item, curr, index) => {
+                                            return item + findAverage(index)
+                                        }, 0)
+                                    }
+                                </th>
+                            }
+
+                        </tr>
                         </tfoot>
                     </table>
                 </div>

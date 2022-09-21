@@ -9,7 +9,7 @@ export const matrixSlice = createSlice({
         rows: null,
         cells: null,
         isCreated: false,
-        matrix: []
+        matrix: [],
 
     },
 
@@ -22,14 +22,26 @@ export const matrixSlice = createSlice({
         },
         setMatrix: (state, action) => {
             state.matrix = action.payload
-        }
+        },
+        incrementCellFC: (state, action) => {
+            state.matrix.map((i) => {
+              return  i.map((i) => {
+                    if(i.id === action.payload.id) {
+                        i.amount++
+                    }
+                })
+            })
+        },
+
     },
 })
 
 
 export const {
     initValuesField,
-    setMatrix
+    setMatrix,
+    incrementCellFC,
+
 } = matrixSlice.actions
 
 export default matrixSlice.reducer
