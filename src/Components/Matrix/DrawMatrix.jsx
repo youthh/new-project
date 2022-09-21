@@ -1,9 +1,9 @@
 import React from 'react';
 import './Matrix.css'
 import {useSelector} from "react-redux";
-import {setAverage} from "../../slices/matrixSlice";
+import {incrementCellFC, setAverage} from "../../slices/matrixSlice";
 
-const DrawMatrix = ({matrix, findAverage, incrementCell, dispatch}) => {
+const DrawMatrix = ({matrix, findAverage, dispatch}) => {
     return (
         <div>
             {
@@ -29,7 +29,7 @@ const DrawMatrix = ({matrix, findAverage, incrementCell, dispatch}) => {
                                     <td>{index}</td>
                                     {
                                         item.map((i) => {
-                                            return <td onClick={() => dispatch(incrementCell(i))}
+                                            return <td onClick={() => dispatch(incrementCellFC(i))}
                                                        key={i.id} className="table table_td">{i.amount}</td>
 
                                         })
