@@ -32,6 +32,34 @@ export const matrixSlice = createSlice({
                 })
             })
         },
+        findSimilar: (state, action) => {
+            state.matrix.map((i) => {
+                return i.map((i) => {
+                    let rez = action.payload.hoveredCell.amount -  i.amount
+                    if(rez <=  120 && rez >= -120) {
+                         i.isActive = true
+                    }
+                    if(action.payload.type === "mouseleave") {
+                        i.isActive = false
+                    }
+                })
+            })
+        },
+        setShowPercent: (state, action) => {
+            state.matrix.map((i, index) => {
+                index++
+                if(index === action.payload.index){
+                    if(action.payload.type === "mouseleave") {
+                        return i.map((i) => {
+                            i.isShowPercent = false
+                        })
+                    }
+                    return i.map((i) => {
+                        i.isShowPercent = true
+                    })
+                }
+            })
+        }
     },
 })
 
@@ -40,6 +68,8 @@ export const {
     initValuesField,
     setMatrix,
     incrementCellFC,
+    findSimilar,
+    setShowPercent
 } = matrixSlice.actions
 
 export default matrixSlice.reducer

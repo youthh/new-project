@@ -3,7 +3,7 @@ import "./Matrix.css";
 import { useSelector } from "react-redux";
 import { incrementCellFC, setAverage } from "../../slices/matrixSlice";
 
-const DrawMatrix = ({ matrix, findAverage, dispatch}) => {
+const DrawMatrix = ({ matrix, findAverage, dispatch, findSimilarCell, showPercent, countPercent}) => {
   return (
     <div>
       {
@@ -29,14 +29,23 @@ const DrawMatrix = ({ matrix, findAverage, dispatch}) => {
                   <td>{index}</td>
                   {
                     item.map((i) => {
+                      let percent = countPercent(item, i)
                       return <td
-                                 onClick={() => dispatch(incrementCellFC(i))}
-                                 key={i.id}
-                                 className={"table table_td "}>{i.amount}
+                        onMouseOver={(e) => {findSimilarCell(i, e);}}
+                        onMouseLeave={(e) => findSimilarCell(i, e)}
+                        onClick={() => dispatch(incrementCellFC(i))}
+                        key={i.id}
+                        className={"table table_td " + (i.isActive ? "active" : "")
+                          + (i.isShowPercent ? " table_td--percent" : '')}>
+                        {i.isShowPercent ? percent : i.amount}
+                        {i.isShowPercent && <div className="percent__height" style={{height: percent, background: "#6500FFFF"}}></div>}
                       </td>;
                     })
                   }
-                  <td className="table table_sum">
+                  <td className="table table_sum"
+                    onMouseOver={(e) => showPercent(index, e)}
+                    onMouseLeave={(e) => showPercent(index, e)}
+                  >
                     {
                       item.reduce((prev, current) => {
                         return prev + current.amount;

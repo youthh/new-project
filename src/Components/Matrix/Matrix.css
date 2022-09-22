@@ -38,17 +38,38 @@
 
 .table{
     border-radius: 8px;
-    cursor: pointer;
+    text-align: center;
     padding: 10px;
     color: #fff;
 }
 
 .table_td{
     background-color: #8f5ed9;
+    cursor: pointer;
+    width: 40px;
+    position: relative;
+    color: #fff;
+    font-weight: 500;
+}
+
+.table_td.table_td--percent{
+
+    color: #a569ff;
+    background: none;
+}
+
+.percent__height{
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    width: 45px;
+    z-index: -1;
 }
 
 .table_td:hover{
     background-color: #6500ff;
+
 }
 
 .table_head{
