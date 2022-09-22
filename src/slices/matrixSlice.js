@@ -32,7 +32,6 @@ export const matrixSlice = createSlice({
                 })
             })
         },
-
     },
 })
 
@@ -41,7 +40,6 @@ export const {
     initValuesField,
     setMatrix,
     incrementCellFC,
-
 } = matrixSlice.actions
 
 export default matrixSlice.reducer

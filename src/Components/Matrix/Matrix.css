@@ -47,6 +47,10 @@
     background-color: #8f5ed9;
 }
 
+.table_td:hover{
+    background-color: #6500ff;
+}
+
 .table_head{
     display: flex;
     justify-content: space-around;
@@ -54,5 +58,9 @@
 }
 
 .table_sum{
-    background-color: #760ff8;
+    background-color: #7016ff;
+}
+
+.active{
+    background-color: #7000bb;
 }

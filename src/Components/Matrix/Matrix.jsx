@@ -1,24 +1,27 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {incrementCellFC, setAverage, setMatrix} from "../../slices/matrixSlice";
+import {
+    findSimilar,
+    incrementCellFC,
+    setMatrix
+} from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
     const columns = useSelector(state => state.matrixSlice.columns)
     const rows = useSelector(state => state.matrixSlice.rows)
-    let average = useSelector(state => state.matrixSlice.average)
-    const cells = useSelector(state => state.matrixSlice.cells)
     const matrix = useSelector(state => state.matrixSlice.matrix)
     const dispatch = useDispatch()
 
-    let generateMatrix = (rows, columns, cells) => {
+    let generateMatrix = (rows, columns) => {
         let arr = new Array(columns)
         for (let i = 0; i < rows; i++) {
             arr[i] = []
             for (let j = 0; j < columns; j++) {
                 arr[i][j] = {
                     amount: Math.floor(Math.random() * (999 - 100) + 100),
-                    id: Math.floor(Math.random() * (1000000))
+                    id: Math.floor(Math.random() * (1000000)),
+                    isActive: false
                 };
             }
 
@@ -47,7 +50,6 @@ const Matrix = () => {
                 matrix={matrix}
                 findAverage={findAverage}
                 dispatch={dispatch}
-
             />
         </div>
     );
