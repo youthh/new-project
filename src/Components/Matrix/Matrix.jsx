@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  findSimilar,
-  incrementCellFC,
   setMatrix, setShowPercent
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
@@ -13,9 +11,7 @@ const Matrix = () => {
   const matrix = useSelector(state => state.matrixSlice.matrix);
   const dispatch = useDispatch();
 
-  let findSimilarCell = (hoveredCell, e) => {
-    dispatch(findSimilar({ hoveredCell, type: e.type }));
-  };
+
 
   let countPercent = (item, element) => {
     let sum = item.reduce((prev, curr) => {
@@ -69,7 +65,6 @@ const Matrix = () => {
         matrix={matrix}
         findAverage={findAverage}
         dispatch={dispatch}
-        findSimilarCell={findSimilarCell}
         showPercent={showPercent}
         countPercent={countPercent}
       />
