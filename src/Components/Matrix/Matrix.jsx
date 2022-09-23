@@ -2,15 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     findSimilar,
-    incrementCellFC,
+    incrementCellFC, matrixSelector,
     setMatrix
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
-    const columns = useSelector(state => state.matrixSlice.columns)
-    const rows = useSelector(state => state.matrixSlice.rows)
-    const matrix = useSelector(state => state.matrixSlice.matrix)
+    const {columns, rows, matrix} = useSelector(matrixSelector)
     const dispatch = useDispatch()
 
     let generateMatrix = (rows, columns) => {
@@ -49,7 +47,6 @@ const Matrix = () => {
             <DrawMatrix
                 matrix={matrix}
                 findAverage={findAverage}
-                dispatch={dispatch}
             />
         </div>
     );

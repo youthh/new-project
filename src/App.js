@@ -2,9 +2,10 @@ import './App.css';
 import MatrixBuilder from "./Components/Matrix/MatrixBuilder";
 import {useSelector} from "react-redux";
 import Matrix from "./Components/Matrix/Matrix";
+import { matrixSelector } from "./slices/matrixSlice";
 
 function App() {
-    const isCreated = useSelector(state => state.matrixSlice.isCreated)
+    const { isCreated } = useSelector(matrixSelector)
 
   return (
     <div className="App">
