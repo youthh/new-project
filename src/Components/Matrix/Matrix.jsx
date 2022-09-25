@@ -1,8 +1,7 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    findSimilar,
-    incrementCellFC, matrixSelector,
+     matrixSelector,
     setMatrix
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
@@ -29,7 +28,7 @@ const Matrix = () => {
     }
     let findAverage = (numberOfColumn) => {
         let rez = 0;
-        for (let j = 0; j < matrix.length; j++) {
+        for (let j = 0; j < rows; j++) {
             rez += matrix[j][numberOfColumn].amount
         }
 
