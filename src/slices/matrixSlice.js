@@ -23,7 +23,7 @@ export const matrixSlice = createSlice({
         setMatrix: (state, action) => {
             state.matrix = action.payload
         },
-        incrementCellFC: (state, action) => {
+        incrementCell: (state, action) => {
             state.matrix.map((i) => {
               return  i.map((i) => {
                     if(i.id === action.payload.id) {
@@ -63,13 +63,20 @@ export const matrixSlice = createSlice({
     },
 })
 
-
+export const matrixSelector = (state) => {
+    return {
+        columns: state.matrixSlice.columns,
+        rows: state.matrixSlice.rows,
+        isCreated: state.matrixSlice.isCreated,
+        matrix: state.matrixSlice.matrix
+    }
+}
 
 
 export const {
     initValuesField,
     setMatrix,
-    incrementCellFC,
+    incrementCell,
     findSimilar,
     setShowPercent
 } = matrixSlice.actions

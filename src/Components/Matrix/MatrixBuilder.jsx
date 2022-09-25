@@ -10,7 +10,7 @@ const MatrixBuilder = () => {
     const dispatch = useDispatch()
 
     /** set size of matrix**/
-    const btnOnClick = () => {
+    const createMatrixOnClick = () => {
         if (inputColumns.current.value || inputRows.current.value || inputCells.current.value ){
           dispatch(initValuesField({
               columns: inputColumns.current.value,
@@ -37,7 +37,7 @@ const MatrixBuilder = () => {
                 <input ref={inputCells}  type="number" step="1" id="theNumber" min="0" max="100" />
             </div>
 
-            <button onClick={() => btnOnClick()} className="box__matrix--btn">Create</button>
+            <button onClick={() => createMatrixOnClick()} className="box__matrix--btn">Create</button>
         </div>
     );
 };

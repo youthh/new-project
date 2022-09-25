@@ -1,13 +1,13 @@
 import React from "react";
 import "./Matrix.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  findSimilar,
-  incrementCellFC,
-  setAverage
+  findSimilar, incrementCell,
+
 } from "../../slices/matrixSlice";
 
-const DrawMatrix = ({ matrix, findAverage, dispatch, showPercent, countPercent}) => {
+const DrawMatrix = ({ matrix, findAverage, showPercent, countPercent}) => {
+  const dispatch = useDispatch()
   return (
     <>
       {
@@ -17,8 +17,8 @@ const DrawMatrix = ({ matrix, findAverage, dispatch, showPercent, countPercent})
             <thead>
             <tr>
               <th>№</th>
-              {matrix.map((item, index) => {
-                index++;
+              {matrix[0].map((item, index) => {
+                index++
                 return <th key={index}>{index}</th>;
 
               })}
@@ -37,7 +37,7 @@ const DrawMatrix = ({ matrix, findAverage, dispatch, showPercent, countPercent})
                       return <td
                         onMouseOver={(e) => dispatch(findSimilar({ hoveredCell: i, type: e.type }))}
                         onMouseLeave={(e) => dispatch(findSimilar({ hoveredCell: i, type: e.type }))}
-                        onClick={() => dispatch(incrementCellFC(i))}
+                        onClick={() => dispatch(incrementCell(i))}
                         key={i.id}
                         className={"table table_td " + (i.isActive ? "active" : "")
                           + (i.isShowPercent ? " table_td--percent" : '')}>
