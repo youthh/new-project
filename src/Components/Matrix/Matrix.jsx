@@ -7,20 +7,19 @@ import {
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
-  const {columns, rows, matrix} = useSelector(matrixSelector)
+  const { columns, rows, matrix } = useSelector(matrixSelector);
   const dispatch = useDispatch();
 
   let countPercent = (item, element) => {
     let sum = item.reduce((prev, curr) => {
-      return prev + curr.amount
-    }, 0)
+      return prev + curr.amount;
+    }, 0);
 
-    return Math.round(element.amount * 100 / sum) + "%"
-  }
+    return Math.round(element.amount * 100 / sum) + "%";
+  };
 
   let showPercent = (index, e) => {
     dispatch(setShowPercent({ index, type: e.type }));
-
   };
 
   let generateMatrix = (rows, columns) => {
