@@ -8,8 +8,7 @@ import {
 
 const DrawMatrix = ({ matrix, findAverage }) => {
   const dispatch = useDispatch();
-  return (
-      matrix.length !== 0 &&
+  return  matrix.length !== 0 && (
         <table>
           <thead>
           <tr>
