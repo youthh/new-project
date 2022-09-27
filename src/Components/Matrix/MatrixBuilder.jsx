@@ -31,7 +31,7 @@ const MatrixBuilder = () => {
       <h1 className="box__matrix--title">Matrix builder</h1>
 
       <div className="box__matrix-field">
-        <p className="box__matrix-label">Enter the number of columns</p>
+        <p className="box__matrix-label">Enter the number of columns</p>{" "}
         <input
           ref={inputColumns}
           type="number"
