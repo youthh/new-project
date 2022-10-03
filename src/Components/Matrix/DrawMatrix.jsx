@@ -1,93 +1,109 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./Matrix.css";
 import { useDispatch } from "react-redux";
 import {
+  addAverageCell,
+  addRow,
   findSimilarOnMoveLeave, incrementCell
 
 } from "../../slices/matrixSlice";
+import MatrixCell from "./MatrixCell";
 
-const DrawMatrix = ({ matrix, findAverage, showPercent, countPercent }) => {
+const DrawMatrix = ({
+  matrix,
+  findAverage,
+  showPercent,
+  countPercent,
+  deleteRowOnClick,
+  countOfColumn
+
+}) => {
   const dispatch = useDispatch();
+
   return matrix.length !== 0 && (
-    <table>
-      <thead>
-      <tr>
-        <th>№</th>
-        {matrix[0].map((item, index) => {
+    <div className="box__matrix-container">
+      <table>
+        <thead>
+        <tr>
+          <th>№</th>
+          {matrix[0].map((item, index) => {
+            index++;
+            return <th key={index}>{index}</th>;
+          })}
+          <th>Sum</th>
+        </tr>
+        </thead>
+        <tbody>
+        {matrix.map((item, index) => {
           index++;
-          return <th key={index}>{index}</th>;
+          return (
+            <tr key={index}>
+              <td>{index}</td>
+              {
+                item.map((i) => {
+                  let percent = countPercent(item, i);
+                  return <MatrixCell
+                    key={i.id}
+                    i={i}
+                    percent={percent}
+                  />;
+                })
+              }
+              <td className="table table_sum"
+                  onMouseOver={(e) => showPercent(index, e)}
+                  onMouseLeave={(e) => showPercent(index, e)}
+              >
+                {
+                  item.reduce((prev, current) => {
+                    return prev + current.amount;
+                  }, 0)
+                }
+              </td>
+              <td>
+                <button onClick={() => {
+                  deleteRowOnClick(index);
+                }}
+                        className="btn">
+                  delete
+                </button>
+              </td>
+            </tr>
+          );
         })}
-        <th>Sum</th>
-      </tr>
-      </thead>
-      <tbody>
-      {matrix.map((item, index) => {
-        index++;
-        return (
-          <tr key={index}>
-            <td>{index}</td>
-            {
-              item.map((i) => {
-                let percent = countPercent(item, i);
-                return <td
-                  onMouseOver={(e) => dispatch(findSimilarOnMoveLeave({
-                    hoveredCell: i,
-                    type: e.type
-                  }))}
-                  onMouseLeave={(e) => dispatch(findSimilarOnMoveLeave({
-                    hoveredCell: i,
-                    type: e.type
-                  }))}
-                  onClick={() => dispatch(incrementCell(i))}
-                  key={i.id}
-                  className={"table table_td " + (i.isActive ? "active" : "")
-                    + (i.isShowPercent ? " table_td--percent" : "")}>
-                  {i.isShowPercent ? percent : i.amount}
-                  {i.isShowPercent && <div className="percent__height" style={{
-                    height: percent,
-                    background: "#6500FFFF"
-                  }}></div>}
-                </td>;
-              })
-            }
-            <td className="table table_sum"
-                onMouseOver={(e) => showPercent(index, e)}
-                onMouseLeave={(e) => showPercent(index, e)}
+        </tbody>
+
+        <tfoot>
+        <tr>
+          <th>Avg</th>
+          {
+            matrix[0].map((item, index) => {
+              let i = findAverage(index);
+              //dispatch(addAverageCell(i));
+              return <th className="table table_sum"
+                         key={index}>{i}</th>;
+            })
+          }
+          {
+            <th className="table table_sum"
             >
               {
-                item.reduce((prev, current) => {
-                  return prev + current.amount;
+                matrix[0].reduce((item, curr, index) => {
+                  return item + findAverage(index);
                 }, 0)
               }
-            </td>
-          </tr>
-        );
-      })}
-      </tbody>
+            </th>
+          }
 
-      <tfoot>
-      <tr>
-        <th>Avg</th>
-        {
-          matrix[0].map((item, index) => {
-            return <th className="table table_sum"
-                       key={index}>{findAverage(index)}</th>;
-          })
-        }
+        </tr>
+        </tfoot>
+      </table>
+      <button onClick={() => {
+        dispatch(addRow());
 
-        {
-          <th className="table table_sum">
-            {
-              matrix[0].reduce((item, curr, index) => {
-                return item + findAverage(index);
-              }, 0)
-            }
-          </th>
-        }
-
-      </tr>
-      </tfoot>
-    </table>
+      }}
+              className="btn btn__add--row">Add Row
+      </button>
+    </div>
   );
 };
 

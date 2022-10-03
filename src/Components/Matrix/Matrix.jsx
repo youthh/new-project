@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import {
-  matrixSelector,
+  addAverageCell,
+  matrixSelector, rowsDelete,
   setMatrix, setShowPercent
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
-  const { columns, rows, matrix } = useSelector(matrixSelector);
+  const { columns, rows, matrix, averageCell } = useSelector(matrixSelector);
+  let [countOfColumn, setPageColumn] = useState([]);
   const dispatch = useDispatch();
+
 
   let countPercent = (item, element) => {
     let sum = item.reduce((prev, curr) => {
@@ -20,6 +23,10 @@ const Matrix = () => {
 
   let showPercent = (index, e) => {
     dispatch(setShowPercent({ index, type: e.type }));
+  };
+
+  let deleteRowOnClick = (index) => {
+    dispatch(rowsDelete(index));
   };
 
   let generateMatrix = (rows, columns) => {
@@ -45,8 +52,9 @@ const Matrix = () => {
     for (let j = 0; j < rows; j++) {
       rez += matrix[j][numberOfColumn].amount;
     }
-
-    return Math.floor(rez / rows);
+    let avrg = Math.floor(rez / rows);
+    //setPageColumn((prev) => [...prev, avrg]);
+    return avrg;
 
   };
 
@@ -59,10 +67,12 @@ const Matrix = () => {
     <div>
       <DrawMatrix
         matrix={matrix}
-        findAverage={findAverage}
+        countOfColumn={countOfColumn}
         dispatch={dispatch}
         showPercent={showPercent}
+        deleteRowOnClick={deleteRowOnClick}
         countPercent={countPercent}
+        findAverage={findAverage}
       />
     </div>
   );

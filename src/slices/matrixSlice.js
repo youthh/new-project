@@ -9,8 +9,9 @@ export const matrixSlice = createSlice({
     rows: null,
     cells: null,
     isCreated: false,
-    matrix: []
-
+    matrix: [],
+    averageCell: [],
+    countOfColumn: null
   },
 
   reducers: {
@@ -59,6 +60,31 @@ export const matrixSlice = createSlice({
           });
         }
       });
+    },
+    rowsDelete: (state, action) => {
+      state.rows--;
+      action.payload--;
+      state.matrix = state.matrix.filter((item, index) => index !== action.payload);
+    },
+    addRow: (state) => {
+      state.rows++;
+      let row = [];
+      for (let i = 0; i < state.columns; i++) {
+        row.push({
+          amount: Math.floor(Math.random() * (999 - 100) + 100),
+          id: Math.floor(Math.random() * (1000000)),
+          isActive: false,
+          isShowPercent: false
+        });
+      }
+      state.matrix.push(row);
+    },
+    addAverageCell: (state, action) => {
+      state.averageCell.push(action.payload);
+    },
+    setNewPageColumn: (state, action) => {
+      debugger
+      state.countOfColumn = action.payload;
     }
   }
 });
@@ -68,7 +94,8 @@ export const matrixSelector = (state) => {
     columns: state.matrixSlice.columns,
     rows: state.matrixSlice.rows,
     isCreated: state.matrixSlice.isCreated,
-    matrix: state.matrixSlice.matrix
+    matrix: state.matrixSlice.matrix,
+    countOfColumn: state.matrixSlice.countOfColumn
   };
 };
 
@@ -78,7 +105,11 @@ export const {
   setMatrix,
   incrementCell,
   findSimilarOnMoveLeave,
-  setShowPercent
+  setShowPercent,
+  rowsDelete,
+  addRow,
+  addAverageCell,
+  setNewPageColumn
 } = matrixSlice.actions;
 
 export default matrixSlice.reducer;
