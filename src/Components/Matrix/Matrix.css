@@ -50,30 +50,28 @@
     text-align: center;
     padding: 10px;
     color: #fff;
+    position: relative;
 }
 
 .table_td {
     background-color: #8f5ed9;
     cursor: pointer;
     width: 40px;
-    position: relative;
     color: #fff;
     font-weight: 500;
 }
 
-.table_td.table_td--percent {
+.table.table_td--percent {
 
     color: #a569ff;
     background: none;
 }
 
 .percent__height {
-    content: "";
-
-    position: absolute;
     bottom: 0;
     width: 45px;
     z-index: -1;
+    position: absolute;
 }
 
 .table_td:hover {

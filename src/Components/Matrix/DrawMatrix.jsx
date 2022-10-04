@@ -8,15 +8,14 @@ import {
 
 } from "../../slices/matrixSlice";
 import MatrixCell from "./MatrixCell";
+import AverageRow from "./AverageRow";
 
 const DrawMatrix = ({
   matrix,
-  findAverage,
   showPercent,
   countPercent,
   deleteRowOnClick,
-  countOfColumn
-
+  averageCell
 }) => {
   const dispatch = useDispatch();
 
@@ -40,18 +39,18 @@ const DrawMatrix = ({
             <tr key={index}>
               <td>{index}</td>
               {
-                item.map((i) => {
-                  let percent = countPercent(item, i);
+                item.length && item.map((cellItem) => {
+                  let percent = countPercent(item, cellItem);
                   return <MatrixCell
-                    key={i.id}
-                    i={i}
+                    key={cellItem.id}
+                    item={cellItem}
                     percent={percent}
                   />;
                 })
               }
               <td className="table table_sum"
-                  onMouseOver={(e) => showPercent(index, e)}
-                  onMouseLeave={(e) => showPercent(index, e)}
+                  onMouseOver={(e) => showPercent(e, index)}
+                  onMouseLeave={(e) => showPercent(e, index)}
               >
                 {
                   item.reduce((prev, current) => {
@@ -64,7 +63,7 @@ const DrawMatrix = ({
                   deleteRowOnClick(index);
                 }}
                         className="btn">
-                  delete
+                  ✖
                 </button>
               </td>
             </tr>
@@ -73,33 +72,15 @@ const DrawMatrix = ({
         </tbody>
 
         <tfoot>
-        <tr>
-          <th>Avg</th>
-          {
-            matrix[0].map((item, index) => {
-              let i = findAverage(index);
-              //dispatch(addAverageCell(i));
-              return <th className="table table_sum"
-                         key={index}>{i}</th>;
-            })
-          }
-          {
-            <th className="table table_sum"
-            >
-              {
-                matrix[0].reduce((item, curr, index) => {
-                  return item + findAverage(index);
-                }, 0)
-              }
-            </th>
-          }
-
-        </tr>
+        <AverageRow
+          averageCell={averageCell}
+          showPercent={showPercent}
+          countPercent={countPercent}
+        />
         </tfoot>
       </table>
       <button onClick={() => {
         dispatch(addRow());
-
       }}
               className="btn btn__add--row">Add Row
       </button>

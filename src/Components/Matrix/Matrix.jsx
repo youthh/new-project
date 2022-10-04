@@ -6,23 +6,23 @@ import {
   setMatrix, setShowPercent
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
+import { logDOM } from "@testing-library/react";
 
 const Matrix = () => {
   const { columns, rows, matrix, averageCell } = useSelector(matrixSelector);
-  let [countOfColumn, setPageColumn] = useState([]);
   const dispatch = useDispatch();
 
 
-  let countPercent = (item, element) => {
+  let countPercent = (item, i) => {
     let sum = item.reduce((prev, curr) => {
       return prev + curr.amount;
     }, 0);
-
-    return Math.round(element.amount * 100 / sum) + "%";
+    console.log(i);
+    return Math.round(i.amount * 100 / sum) + "%";
   };
 
-  let showPercent = (index, e) => {
-    dispatch(setShowPercent({ index, type: e.type }));
+  let showPercent = (e, index) => {
+    dispatch(setShowPercent({ index, e }));
   };
 
   let deleteRowOnClick = (index) => {
@@ -49,30 +49,39 @@ const Matrix = () => {
 
   let findAverage = (numberOfColumn) => {
     let rez = 0;
-    for (let j = 0; j < rows; j++) {
+    for (let j = 0; j < matrix.length; j++) {
       rez += matrix[j][numberOfColumn].amount;
     }
-    let avrg = Math.floor(rez / rows);
-    //setPageColumn((prev) => [...prev, avrg]);
-    return avrg;
 
+    return Math.floor(rez / matrix.length);
   };
 
+
   useEffect(() => {
-    if (matrix.length === 0) {
-      generateMatrix(rows, columns);
-    }
-  }, []);
+    // create matrix in builder
+    !matrix.length && generateMatrix(rows, columns);
+
+    //set Average
+    matrix.length && dispatch(addAverageCell(
+      matrix[0].map((i, index) => {
+        return {
+          amount: findAverage(index),
+          isShowPercent: false,
+          id: Math.floor(Math.random() * (1000000))
+        };
+      })
+    ));
+
+  }, [matrix]);
   return (
     <div>
       <DrawMatrix
         matrix={matrix}
-        countOfColumn={countOfColumn}
         dispatch={dispatch}
         showPercent={showPercent}
         deleteRowOnClick={deleteRowOnClick}
         countPercent={countPercent}
-        findAverage={findAverage}
+        averageCell={averageCell}
       />
     </div>
   );
