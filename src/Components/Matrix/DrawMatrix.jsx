@@ -13,13 +13,13 @@ import AverageRow from "./AverageRow";
 const DrawMatrix = ({
   matrix,
   showPercent,
-  countPercent,
   deleteRowOnClick,
-  averageCell
+  averageCell,
+  rowShowPercent
 }) => {
   const dispatch = useDispatch();
 
-  return matrix.length !== 0 && (
+  return matrix.length && (
     <div className="box__matrix-container">
       <table>
         <thead>
@@ -39,18 +39,18 @@ const DrawMatrix = ({
             <tr key={index}>
               <td>{index}</td>
               {
-                item.length && item.map((cellItem) => {
-                  let percent = countPercent(item, cellItem);
+                item.length && item.map((cellItem, index) => {
                   return <MatrixCell
                     key={cellItem.id}
                     item={cellItem}
-                    percent={percent}
+                    rowShowPercent={rowShowPercent}
+                    index={index}
                   />;
                 })
               }
               <td className="table table_sum"
-                  onMouseOver={(e) => showPercent(e, index)}
-                  onMouseLeave={(e) => showPercent(e, index)}
+                  onMouseOver={(e) => showPercent(e, item, index)}
+                  onMouseLeave={(e) => showPercent(e, item, index)}
               >
                 {
                   item.reduce((prev, current) => {
@@ -62,7 +62,7 @@ const DrawMatrix = ({
                 <button onClick={() => {
                   deleteRowOnClick(index);
                 }}
-                        className="btn">
+                        className="btn btn_delete--row">
                   ✖
                 </button>
               </td>
@@ -75,7 +75,7 @@ const DrawMatrix = ({
         <AverageRow
           averageCell={averageCell}
           showPercent={showPercent}
-          countPercent={countPercent}
+          rowPercent={rowShowPercent}
         />
         </tfoot>
       </table>

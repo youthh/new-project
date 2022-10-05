@@ -3,25 +3,31 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import {
   addAverageCell,
   matrixSelector, rowsDelete,
-  setMatrix, setShowPercent
+  setMatrix, setRowPercent, setShowPercent
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
 import { logDOM } from "@testing-library/react";
 
 const Matrix = () => {
-  const { columns, rows, matrix, averageCell } = useSelector(matrixSelector);
+  const {
+    columns, rows, matrix, averageCell, rowShowPercent
+  } = useSelector(matrixSelector);
   const dispatch = useDispatch();
 
 
-  let countPercent = (item, i) => {
+  let countPercent = (item) => {
+    let arr = [];
     let sum = item.reduce((prev, curr) => {
       return prev + curr.amount;
     }, 0);
-    console.log(i);
-    return Math.round(i.amount * 100 / sum) + "%";
+    for (let j = 0; j < item.length; j++) {
+      arr.push(Math.round(item[j].amount * 100 / sum) + "%");
+    }
+    return arr;
   };
 
-  let showPercent = (e, index) => {
+  let showPercent = (e, item, index) => {
+    dispatch(setRowPercent(countPercent(item)));
     dispatch(setShowPercent({ index, e }));
   };
 
@@ -36,7 +42,7 @@ const Matrix = () => {
       for (let j = 0; j < columns; j++) {
         arr[i][j] = {
           amount: Math.floor(Math.random() * (999 - 100) + 100),
-          id: Math.floor(Math.random() * (1000000)),
+          id: Math.random().toString(16).slice(2),
           isActive: false,
           isShowPercent: false
         };
@@ -80,8 +86,8 @@ const Matrix = () => {
         dispatch={dispatch}
         showPercent={showPercent}
         deleteRowOnClick={deleteRowOnClick}
-        countPercent={countPercent}
         averageCell={averageCell}
+        rowShowPercent={rowShowPercent}
       />
     </div>
   );

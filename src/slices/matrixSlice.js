@@ -9,7 +9,8 @@ export const matrixSlice = createSlice({
     rows: null,
     cells: null,
     matrix: [],
-    averageCell: []
+    averageCell: [],
+    rowShowPercent: []
   },
 
   reducers: {
@@ -91,6 +92,9 @@ export const matrixSlice = createSlice({
     },
     addAverageCell: (state, action) => {
       state.averageCell = [action.payload].flat();
+    },
+    setRowPercent: (state, action) => {
+      state.rowShowPercent = [...action.payload];
     }
   }
 });
@@ -100,7 +104,8 @@ export const matrixSelector = (state) => {
     columns: state.matrixSlice.columns,
     rows: state.matrixSlice.rows,
     matrix: state.matrixSlice.matrix,
-    averageCell: state.matrixSlice.averageCell
+    averageCell: state.matrixSlice.averageCell,
+    rowShowPercent: state.matrixSlice.rowShowPercent
   };
 };
 
@@ -113,6 +118,7 @@ export const {
   setShowPercent,
   rowsDelete,
   addRow,
+  setRowPercent,
   addAverageCell
 } = matrixSlice.actions;
 

@@ -5,7 +5,7 @@ import {
 } from "../../slices/matrixSlice";
 import { useDispatch } from "react-redux";
 
-const MatrixCell = ({ item, percent }) => {
+const MatrixCell = ({ item, rowShowPercent, index }) => {
   const dispatch = useDispatch();
   return (
     <td
@@ -21,10 +21,16 @@ const MatrixCell = ({ item, percent }) => {
       key={item.id}
       className={"table table_td " + (item.isActive ? "active" : "")
         + (item.isShowPercent ? " table_td--percent" : "")}>
-      {item.isShowPercent ? percent : item.amount}
+      {item.isShowPercent ?
+        rowShowPercent.filter((item, inx) => {
+          return index === inx && item;
+        })
+        : item.amount}
       {item.isShowPercent &&
         <div className="percent__height" style={{
-          height: percent,
+          height: rowShowPercent.filter((item, inx) => {
+            return index === inx && item;
+          }),
           background: "#6500FFFF"
         }}></div>
       }
