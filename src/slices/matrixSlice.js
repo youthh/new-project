@@ -18,7 +18,6 @@ export const matrixSlice = createSlice({
       state.columns = parseInt(action.payload.columns);
       state.rows = parseInt(action.payload.rows);
       state.cells = parseInt(action.payload.cells);
-      state.isCreated = true;
     },
     setMatrix: (state, action) => {
       state.matrix = action.payload;
