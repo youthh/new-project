@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export const matrixSlice = createSlice({
   name: "matrix",
 
@@ -9,8 +8,7 @@ export const matrixSlice = createSlice({
     rows: null,
     cells: null,
     isCreated: false,
-    matrix: []
-
+    matrix: [],
   },
 
   reducers: {
@@ -59,8 +57,8 @@ export const matrixSlice = createSlice({
           });
         }
       });
-    }
-  }
+    },
+  },
 });
 
 export const matrixSelector = (state) => {
@@ -68,17 +66,16 @@ export const matrixSelector = (state) => {
     columns: state.matrixSlice.columns,
     rows: state.matrixSlice.rows,
     isCreated: state.matrixSlice.isCreated,
-    matrix: state.matrixSlice.matrix
+    matrix: state.matrixSlice.matrix,
   };
 };
-
 
 export const {
   initValuesField,
   setMatrix,
   incrementCell,
   findSimilarOnMoveLeave,
-  setShowPercent
+  setShowPercent,
 } = matrixSlice.actions;
 
 export default matrixSlice.reducer;

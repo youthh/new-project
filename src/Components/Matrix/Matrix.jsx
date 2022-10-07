@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   matrixSelector,
-  setMatrix, setShowPercent
+  setMatrix,
+  setShowPercent,
 } from "../../slices/matrixSlice";
+
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
@@ -15,7 +17,7 @@ const Matrix = () => {
       return prev + curr.amount;
     }, 0);
 
-    return Math.round(element.amount * 100 / sum) + "%";
+    return Math.round((element.amount * 100) / sum) + "%";
   };
 
   let showPercent = (index, e) => {
@@ -29,14 +31,12 @@ const Matrix = () => {
       for (let j = 0; j < columns; j++) {
         arr[i][j] = {
           amount: Math.floor(Math.random() * (999 - 100) + 100),
-          id: Math.floor(Math.random() * (1000000)),
+          id: Math.floor(Math.random() * 1000000),
           isActive: false,
-          isShowPercent: false
+          isShowPercent: false,
         };
       }
-
     }
-
     dispatch(setMatrix(arr));
   };
 
@@ -47,7 +47,6 @@ const Matrix = () => {
     }
 
     return Math.floor(rez / rows);
-
   };
 
   useEffect(() => {
