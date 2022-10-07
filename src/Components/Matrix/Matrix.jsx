@@ -1,11 +1,28 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { matrixSelector, setMatrix } from "../../slices/matrixSlice";
+import {
+  matrixSelector,
+  setMatrix,
+  setShowPercent,
+} from "../../slices/matrixSlice";
+
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
   const { columns, rows, matrix } = useSelector(matrixSelector);
   const dispatch = useDispatch();
+
+  let countPercent = (item, element) => {
+    let sum = item.reduce((prev, curr) => {
+      return prev + curr.amount;
+    }, 0);
+
+    return Math.round((element.amount * 100) / sum) + "%";
+  };
+
+  let showPercent = (index, e) => {
+    dispatch(setShowPercent({ index, type: e.type }));
+  };
 
   let generateMatrix = (rows, columns) => {
     let arr = new Array(columns);
@@ -16,12 +33,13 @@ const Matrix = () => {
           amount: Math.floor(Math.random() * (999 - 100) + 100),
           id: Math.floor(Math.random() * 1000000),
           isActive: false,
+          isShowPercent: false,
         };
       }
     }
-
     dispatch(setMatrix(arr));
   };
+
   let findAverage = (numberOfColumn) => {
     let rez = 0;
     for (let j = 0; j < rows; j++) {
@@ -38,7 +56,13 @@ const Matrix = () => {
   }, []);
   return (
     <div>
-      <DrawMatrix matrix={matrix} findAverage={findAverage} />
+      <DrawMatrix
+        matrix={matrix}
+        findAverage={findAverage}
+        dispatch={dispatch}
+        showPercent={showPercent}
+        countPercent={countPercent}
+      />
     </div>
   );
 };

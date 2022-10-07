@@ -15,8 +15,6 @@ function App() {
           {isCreated ? <Matrix /> : <MatrixBuilder />}
         </div>
       </div>
-
-      <h1 className="da">Hello</h1>
     </div>
   );
 }
