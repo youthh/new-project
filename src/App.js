@@ -6,17 +6,15 @@ import Matrix from "./Components/Matrix/Matrix";
 import { matrixSelector } from "./slices/matrixSlice";
 
 function App() {
-  const { isCreated } = useSelector(matrixSelector);
+  const { rows } = useSelector(matrixSelector);
 
   return (
     <div className="App">
       <div className="container">
         <div className="inner__app">
-          {isCreated ? <Matrix /> : <MatrixBuilder />}
+          {rows ? <Matrix /> : <MatrixBuilder />}
         </div>
       </div>
-
-      <h1 className="da">Hello</h1>
     </div>
   );
 }

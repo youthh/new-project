@@ -1,28 +1,28 @@
 import React, { useRef } from "react";
 import "./Matrix.css";
 import { useDispatch } from "react-redux";
-import { initValuesField } from "../../slices/matrixSlice";
+import { initValuesField, setMatrix } from "../../slices/matrixSlice";
 
 const MatrixBuilder = () => {
-  let inputColumns = useRef();
-  let inputRows = useRef();
-  let inputCells = useRef();
+  let inputColumn = useRef();
+  let inputRow = useRef();
+  let inputCell = useRef();
   const dispatch = useDispatch();
-
   /** set size of matrix**/
   const createMatrixOnClick = () => {
-    if (
-      inputColumns.current.value ||
-      inputRows.current.value ||
-      inputCells.current.value
-    ) {
+    let inputColumns = inputColumn.current.value;
+    let inputRows = inputRow.current.value;
+    let inputCells = inputCell.current.value;
+    if (inputColumns && inputRows <= 25) {
       dispatch(
         initValuesField({
-          columns: inputColumns.current.value,
-          rows: inputRows.current.value,
-          cells: inputCells.current.value,
+          columns: inputColumns,
+          rows: inputRows,
+          cells: inputCells,
         })
       );
+    } else {
+      alert("max size of matrix 25X25");
     }
   };
 
@@ -31,36 +31,36 @@ const MatrixBuilder = () => {
       <h1 className="box__matrix--title">Matrix builder</h1>
 
       <div className="box__matrix-field">
-        <p className="box__matrix-label">Enter the number of columns</p>{" "}
+        <p className="box__matrix-label">Enter the number of columns</p>
         <input
-          ref={inputColumns}
+          ref={inputColumn}
           type="number"
           step="1"
           id="theNumber"
           min="0"
-          max="100"
+          max="25"
         />
       </div>
       <div className="box__matrix-field">
         <p className="box__matrix-label">Enter the number of rows</p>
         <input
-          ref={inputRows}
+          ref={inputRow}
           type="number"
           step="1"
           id="theNumber"
-          min="0"
-          max="100"
+          min="1"
+          max="25"
         />
       </div>
       <div className="box__matrix-field">
         <p className="box__matrix-label">Enter the number of cells</p>
         <input
-          ref={inputCells}
+          ref={inputCell}
           type="number"
           step="1"
           id="theNumber"
-          min="0"
-          max="100"
+          min="1"
+          max="25"
         />
       </div>
 

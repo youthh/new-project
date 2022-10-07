@@ -1,71 +1,91 @@
 import React from "react";
 import "./Matrix.css";
 import { useDispatch } from "react-redux";
-import { incrementCell } from "../../slices/matrixSlice";
+import MatrixCell from "./MatrixCell";
+import AverageRow from "./AverageRow";
+import { addRow } from "../../slices/matrixSlice";
 
-const DrawMatrix = ({ matrix, findAverage }) => {
+const DrawMatrix = ({
+  matrix,
+  showPercent,
+  deleteRowOnClick,
+  averageCell,
+  rowShowPercent,
+}) => {
   const dispatch = useDispatch();
-  return (
-    matrix.length !== 0 && (
-      <table>
-        <thead>
-          <tr>
-            <th>№</th>
-            {matrix[0].map((item, index) => {
-              index++;
-              return <th key={index}>{index}</th>;
-            })}
-            <th>Sum</th>
-          </tr>
-        </thead>
-        <tbody>
-          {matrix.map((item, index) => {
-            index++;
-            return (
-              <tr key={index}>
-                <td>{index}</td>
-                {item.map((i) => {
-                  return (
-                    <td
-                      onClick={() => dispatch(incrementCell(i))}
-                      key={i.id}
-                      className={"table table_td "}
-                    >
-                      {i.amount}
-                    </td>
-                  );
-                })}
-                <td className="table table_sum">
-                  {item.reduce((prev, current) => {
-                    return prev + current.amount;
-                  }, 0)}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
 
-        <tfoot>
-          <tr>
-            <th>Avg</th>
-            {matrix[0].map((item, index) => {
+  return (
+    matrix.length && (
+      <div className="box__matrix-container">
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              {matrix[0].map((item, index) => {
+                index++;
+                return <th key={index}>{index}</th>;
+              })}
+              <th>Sum</th>
+            </tr>
+          </thead>
+          <tbody>
+            {matrix.map((item, index) => {
+              index++;
               return (
-                <th className="table table_sum" key={index}>
-                  {findAverage(index)}
-                </th>
+                <tr key={index}>
+                  <td>{index}</td>
+                  {item.length &&
+                    item.map((cellItem, index) => {
+                      return (
+                        <MatrixCell
+                          key={cellItem.id}
+                          item={cellItem}
+                          rowShowPercent={rowShowPercent}
+                          index={index}
+                        />
+                      );
+                    })}
+                  <td
+                    className="table table_sum"
+                    onMouseOver={(e) => showPercent(e, item, index)}
+                    onMouseLeave={(e) => showPercent(e, item, index)}
+                  >
+                    {item.reduce((prev, current) => {
+                      return prev + current.amount;
+                    }, 0)}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        deleteRowOnClick(index);
+                      }}
+                      className="btn btn_delete--row"
+                    >
+                      ✖
+                    </button>
+                  </td>
+                </tr>
               );
             })}
+          </tbody>
 
-            {
-              <th className="table table_sum">
-                {matrix[0].reduce((item, curr, index) => {
-                  return item + findAverage(index);
-                }, 0)}
-              </th>
-            }
-          </tr>
-        </tfoot>
-      </table>
+          <tfoot>
+            <AverageRow
+              averageCell={averageCell}
+              showPercent={showPercent}
+              rowPercent={rowShowPercent}
+            />
+          </tfoot>
+        </table>
+        <button
+          onClick={() => {
+            dispatch(addRow());
+          }}
+          className="btn btn__add--row"
+        >
+          Add Row
+        </button>
+      </div>
     )
   );
 };
