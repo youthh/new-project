@@ -9,15 +9,14 @@ export const matrixSlice = createSlice({
     rows: null,
     cells: null,
     matrix: [],
-    averageCell: [],
     rowShowPercent: []
   },
 
   reducers: {
     initValuesField: (state, action) => {
       state.columns = parseInt(action.payload.columns);
-      state.rows = parseInt(action.payload.rows);
-      state.cells = parseInt(action.payload.cells);
+      state.rows = ++action.payload.rows;
+      state.cells = action.payload.cells;
     },
     setMatrix: (state, action) => {
       state.matrix = action.payload;
@@ -32,17 +31,18 @@ export const matrixSlice = createSlice({
       });
     },
     findSimilarOnMoveLeave: (state, action) => {
-      // todo: improve search
-      state.matrix.map((i) => {
-        return i.map((i) => {
-          let rez = action.payload.hoveredCell.amount - i.amount;
-          if (rez <= 120 && rez >= -120) {
-            i.isActive = true;
-          }
-          if (action.payload.type === "mouseleave") {
-            i.isActive = false;
-          }
-        });
+      state.matrix.map((i, inx) => {
+        if (state.matrix.length - 1 !== inx) {
+          return i.map((i) => {
+            let rez = action.payload.hoveredCell.amount - i.amount;
+            if (rez <= 120 && rez >= -120) {
+              i.isActive = true;
+            }
+            if (action.payload.type === "mouseleave") {
+              i.isActive = false;
+            }
+          });
+        }
       });
     },
     setShowPercent: (state, action) => {
@@ -89,9 +89,6 @@ export const matrixSlice = createSlice({
       }
       state.matrix.push(row);
     },
-    addAverageCell: (state, action) => {
-      state.averageCell = [action.payload].flat();
-    },
     setRowPercent: (state, action) => {
       state.rowShowPercent = [...action.payload];
     }
@@ -103,7 +100,6 @@ export const matrixSelector = (state) => {
     columns: state.matrixSlice.columns,
     rows: state.matrixSlice.rows,
     matrix: state.matrixSlice.matrix,
-    averageCell: state.matrixSlice.averageCell,
     rowShowPercent: state.matrixSlice.rowShowPercent
   };
 };
@@ -117,8 +113,7 @@ export const {
   setShowPercent,
   rowsDelete,
   addRow,
-  setRowPercent,
-  addAverageCell
+  setRowPercent
 } = matrixSlice.actions;
 
 export default matrixSlice.reducer;

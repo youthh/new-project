@@ -1,20 +1,16 @@
-import React, { useMemo } from "react";
+import React from "react";
 import "./Matrix.css";
 import { useDispatch } from "react-redux";
 import {
-  addAverageCell,
   addRow,
   findSimilarOnMoveLeave, incrementCell
-
 } from "../../slices/matrixSlice";
 import MatrixCell from "./MatrixCell";
-import AverageRow from "./AverageRow";
 
 const DrawMatrix = ({
   matrix,
   showPercent,
   deleteRowOnClick,
-  averageCell,
   rowShowPercent
 }) => {
   const dispatch = useDispatch();
@@ -33,50 +29,78 @@ const DrawMatrix = ({
         </tr>
         </thead>
         <tbody>
-        {matrix.map((item, index) => {
-          index++;
-          return (
-            <tr key={index}>
-              <td>{index}</td>
-              {
-                item.length && item.map((cellItem, index) => {
-                  return <MatrixCell
-                    key={cellItem.id}
-                    item={cellItem}
-                    rowShowPercent={rowShowPercent}
-                    index={index}
-                  />;
-                })
-              }
-              <td className="table table_sum"
-                  onMouseOver={(e) => showPercent(e, item, index)}
-                  onMouseLeave={(e) => showPercent(e, item, index)}
-              >
-                {
-                  item.reduce((prev, current) => {
-                    return prev + current.amount;
-                  }, 0)
-                }
-              </td>
-              <td>
-                <button onClick={() => {
-                  deleteRowOnClick(index);
-                }}
-                        className="btn btn_delete--row">
-                  ✖
-                </button>
-              </td>
-            </tr>
-          );
-        })}
+        {
+          matrix.map((item, indx) => {
+            indx++;
+            if (indx !== matrix.length) {
+              return (
+                <tr>
+                  <td>{indx}</td>
+                  {
+                    item.length && item.map((cellItem, index) => {
+                      return <MatrixCell
+                        key={cellItem.id}
+                        item={cellItem}
+                        rowShowPercent={rowShowPercent}
+                        index={index}
+                        isAverage={false}
+                      />;
+                    })
+                  }
+                  <td className="table table_sum"
+                      onMouseOver={(e) => showPercent(e, item, indx)}
+                      onMouseLeave={(e) => showPercent(e, item, indx)}
+                  >
+                    {
+                      item.reduce((prev, current) => {
+                        return prev + current.amount;
+                      }, 0)
+                    }
+                  </td>
+                  <td>
+                    <button onClick={() => {
+                      deleteRowOnClick(indx);
+                    }}
+                            className="btn btn_delete--row">
+                      ✖
+                    </button>
+                  </td>
+                </tr>
+              );
+            }
+          })
+        }
         </tbody>
-
         <tfoot>
-        <AverageRow
-          averageCell={averageCell}
-          showPercent={showPercent}
-          rowPercent={rowShowPercent}
-        />
+        {
+          matrix.map((item, indx) => {
+            if (indx === matrix.length - 1) {
+              return (
+                <tr>
+                  <td>avg</td>
+                  {
+                    item.map((cellItem, index) => {
+                      return <MatrixCell
+                        key={cellItem.id}
+                        item={cellItem}
+                        rowShowPercent={rowShowPercent}
+                        index={index}
+                        isAverage={true}
+                      />;
+                    })
+                  }
+                  <td className="table table_sum">
+                    {
+                      item.reduce((prev, current) => {
+                        return prev + current.amount;
+                      }, 0)
+                    }
+                  </td>
+                </tr>
+              );
+            }
+          })
+        }
         </tfoot>
       </table>
       <button onClick={() => {
@@ -89,3 +113,4 @@ const DrawMatrix = ({
 };
 
 export default DrawMatrix;
+

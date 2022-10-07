@@ -5,10 +5,11 @@ import {
 } from "../../slices/matrixSlice";
 import { useDispatch } from "react-redux";
 
-const MatrixCell = ({ item, rowShowPercent, index }) => {
+const MatrixCell = ({ item, rowShowPercent, index, isAverage }) => {
   const dispatch = useDispatch();
   return (
     <td
+      key={item.id}
       onMouseOver={(e) => dispatch(findSimilarOnMoveLeave({
         hoveredCell: item,
         type: e.type
@@ -17,9 +18,11 @@ const MatrixCell = ({ item, rowShowPercent, index }) => {
         hoveredCell: item,
         type: e.type
       }))}
-      onClick={() => dispatch(incrementCell(item))}
-      key={item.id}
-      className={"table table_td " + (item.isActive ? "active" : "")
+      onClick={() => {
+        !isAverage && dispatch(incrementCell(item));
+      }}
+      className={"table " + (isAverage ? "table_sum" : "table_td")
+        + (item.isActive ? " active" : "")
         + (item.isShowPercent ? " table_td--percent" : "")}>
       {item.isShowPercent ?
         rowShowPercent.filter((item, inx) => {

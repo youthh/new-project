@@ -10,7 +10,7 @@ import { logDOM } from "@testing-library/react";
 
 const Matrix = () => {
   const {
-    columns, rows, matrix, averageCell, rowShowPercent
+    columns, rows, matrix, rowShowPercent
   } = useSelector(matrixSelector);
   const dispatch = useDispatch();
 
@@ -37,29 +37,41 @@ const Matrix = () => {
 
   let generateMatrix = (rows, columns) => {
     let arr = new Array(columns);
+    let rez = 0;
     for (let i = 0; i < rows; i++) {
       arr[i] = [];
       for (let j = 0; j < columns; j++) {
-        arr[i][j] = {
-          amount: Math.floor(Math.random() * (999 - 100) + 100),
-          id: Math.random().toString(16).slice(2),
-          isActive: false,
-          isShowPercent: false
-        };
+        // check if it is not  last item of array
+        if (i !== rows - 1) {
+          arr[i][j] = {
+            amount: Math.floor(Math.random() * (999 - 100) + 100),
+            id: Math.random().toString(16).slice(2),
+            isShowPercent: false,
+            isActive: false
+
+          };
+        }
       }
-
     }
-
+    setAverage(arr);
     dispatch(setMatrix(arr));
   };
-
-  let findAverage = (numberOfColumn) => {
+  const setAverage = (arr = matrix) => {
     let rez = 0;
-    for (let j = 0; j < matrix.length; j++) {
-      rez += matrix[j][numberOfColumn].amount;
+    for (let j = 0; j < columns; j++) {
+      for (let k = 0; k < rows; k++) {
+        if (k !== rows - 1) {
+          rez += arr[k][j].amount;
+        } else {
+          arr[k][j] = {
+            amount: Math.floor(rez / (arr.length - 1)),
+            id: Math.random().toString(16).slice(2),
+            isShowPercent: false
+          };
+          rez = 0;
+        }
+      }
     }
-
-    return Math.floor(rez / matrix.length);
   };
 
 
@@ -67,18 +79,9 @@ const Matrix = () => {
     // create matrix in builder
     !matrix.length && generateMatrix(rows, columns);
 
-    //set Average
-    matrix.length && dispatch(addAverageCell(
-      matrix[0].map((i, index) => {
-        return {
-          amount: findAverage(index),
-          isShowPercent: false,
-          id: Math.floor(Math.random() * (1000000))
-        };
-      })
-    ));
+    //matrix.length && setAverage();
 
-  }, [matrix]);
+  }, [matrix.length]);
   return (
     <div>
       <DrawMatrix
@@ -86,7 +89,6 @@ const Matrix = () => {
         dispatch={dispatch}
         showPercent={showPercent}
         deleteRowOnClick={deleteRowOnClick}
-        averageCell={averageCell}
         rowShowPercent={rowShowPercent}
       />
     </div>
