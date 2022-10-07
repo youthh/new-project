@@ -1,19 +1,19 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addAverageCell,
-  matrixSelector, rowsDelete,
-  setMatrix, setRowPercent, setShowPercent
+  matrixSelector,
+  rowsDelete,
+  setMatrix,
+  setRowPercent,
+  setShowPercent,
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
-import { logDOM } from "@testing-library/react";
 
 const Matrix = () => {
-  const {
-    columns, rows, matrix, averageCell, rowShowPercent
-  } = useSelector(matrixSelector);
+  const { columns, rows, matrix, averageCell, rowShowPercent } =
+    useSelector(matrixSelector);
   const dispatch = useDispatch();
-
 
   let countPercent = (item) => {
     let arr = [];
@@ -21,7 +21,7 @@ const Matrix = () => {
       return prev + curr.amount;
     }, 0);
     for (let j = 0; j < item.length; j++) {
-      arr.push(Math.round(item[j].amount * 100 / sum) + "%");
+      arr.push(Math.round((item[j].amount * 100) / sum) + "%");
     }
     return arr;
   };
@@ -44,12 +44,10 @@ const Matrix = () => {
           amount: Math.floor(Math.random() * (999 - 100) + 100),
           id: Math.random().toString(16).slice(2),
           isActive: false,
-          isShowPercent: false
+          isShowPercent: false,
         };
       }
-
     }
-
     dispatch(setMatrix(arr));
   };
 
@@ -62,22 +60,23 @@ const Matrix = () => {
     return Math.floor(rez / matrix.length);
   };
 
-
   useEffect(() => {
     // create matrix in builder
     !matrix.length && generateMatrix(rows, columns);
 
     //set Average
-    matrix.length && dispatch(addAverageCell(
-      matrix[0].map((i, index) => {
-        return {
-          amount: findAverage(index),
-          isShowPercent: false,
-          id: Math.floor(Math.random() * (1000000))
-        };
-      })
-    ));
-
+    matrix.length &&
+      dispatch(
+        addAverageCell(
+          matrix[0].map((i, index) => {
+            return {
+              amount: findAverage(index),
+              isShowPercent: false,
+              id: Math.floor(Math.random() * 1000000),
+            };
+          })
+        )
+      );
   }, [matrix]);
   return (
     <div>

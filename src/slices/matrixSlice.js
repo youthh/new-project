@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export const matrixSlice = createSlice({
   name: "matrix",
 
@@ -10,7 +9,7 @@ export const matrixSlice = createSlice({
     cells: null,
     matrix: [],
     averageCell: [],
-    rowShowPercent: []
+    rowShowPercent: [],
   },
 
   reducers: {
@@ -32,7 +31,6 @@ export const matrixSlice = createSlice({
       });
     },
     findSimilarOnMoveLeave: (state, action) => {
-      // todo: improve search
       state.matrix.map((i) => {
         return i.map((i) => {
           let rez = action.payload.hoveredCell.amount - i.amount;
@@ -46,13 +44,12 @@ export const matrixSlice = createSlice({
       });
     },
     setShowPercent: (state, action) => {
-
       if (action.payload.e.target.className === "table table_sum average") {
         state.averageCell.map((item) => {
           if (action.payload.e.type === "mouseleave") {
             item.isShowPercent = false;
           } else {
-            return item.isShowPercent = true;
+            return (item.isShowPercent = true);
           }
         });
       } else {
@@ -74,7 +71,9 @@ export const matrixSlice = createSlice({
     rowsDelete: (state, action) => {
       state.rows--;
       action.payload--;
-      state.matrix = state.matrix.filter((item, index) => index !== action.payload);
+      state.matrix = state.matrix.filter(
+        (item, index) => index !== action.payload
+      );
     },
     addRow: (state) => {
       state.rows++;
@@ -82,9 +81,9 @@ export const matrixSlice = createSlice({
       for (let i = 0; i < state.columns; i++) {
         row.push({
           amount: Math.floor(Math.random() * (999 - 100) + 100),
-          id: Math.floor(Math.random() * (1000000)),
+          id: Math.floor(Math.random() * 1000000),
           isActive: false,
-          isShowPercent: false
+          isShowPercent: false,
         });
       }
       state.matrix.push(row);
@@ -94,8 +93,8 @@ export const matrixSlice = createSlice({
     },
     setRowPercent: (state, action) => {
       state.rowShowPercent = [...action.payload];
-    }
-  }
+    },
+  },
 });
 
 export const matrixSelector = (state) => {
@@ -104,10 +103,9 @@ export const matrixSelector = (state) => {
     rows: state.matrixSlice.rows,
     matrix: state.matrixSlice.matrix,
     averageCell: state.matrixSlice.averageCell,
-    rowShowPercent: state.matrixSlice.rowShowPercent
+    rowShowPercent: state.matrixSlice.rowShowPercent,
   };
 };
-
 
 export const {
   initValuesField,
@@ -118,7 +116,7 @@ export const {
   rowsDelete,
   addRow,
   setRowPercent,
-  addAverageCell
+  addAverageCell,
 } = matrixSlice.actions;
 
 export default matrixSlice.reducer;

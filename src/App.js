@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import MatrixBuilder from "./Components/Matrix/MatrixBuilder";
 import { useSelector } from "react-redux";
@@ -11,9 +12,7 @@ function App() {
     <div className="App">
       <div className="container">
         <div className="inner__app">
-          {
-            rows ? <Matrix /> : <MatrixBuilder />
-          }
+          {rows ? <Matrix /> : <MatrixBuilder />}
         </div>
       </div>
     </div>
