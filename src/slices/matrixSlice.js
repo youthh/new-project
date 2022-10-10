@@ -17,6 +17,7 @@ export const matrixSlice = createSlice({
       state.columns = parseInt(action.payload.columns);
       state.rows = ++action.payload.rows;
       state.cells = action.payload.cells;
+
     },
     setMatrix: (state, action) => {
       state.matrix = action.payload;
@@ -46,34 +47,27 @@ export const matrixSlice = createSlice({
       });
     },
     setShowPercent: (state, action) => {
-
-      if (action.payload.e.target.className === "table table_sum average") {
-        state.averageCell.map((item) => {
+      state.matrix.map((i, index) => {
+        if (index === action.payload.index - 1) {
           if (action.payload.e.type === "mouseleave") {
-            item.isShowPercent = false;
-          } else {
-            return item.isShowPercent = true;
-          }
-        });
-      } else {
-        state.matrix.map((i, index) => {
-          index++;
-          if (index === action.payload.index) {
-            if (action.payload.e.type === "mouseleave") {
-              return i.map((i) => {
-                i.isShowPercent = false;
-              });
-            }
             return i.map((i) => {
-              i.isShowPercent = true;
+              i.isShowPercent = false;
             });
           }
-        });
-      }
+          return i.map((i) => {
+            i.isShowPercent = true;
+          });
+        }
+      });
     },
     rowsDelete: (state, action) => {
       state.rows--;
       action.payload--;
+      if (state.rows === 1) {
+        state.matrix = [];
+        state.rows = 0;
+        state.columns = 0;
+      }
       state.matrix = state.matrix.filter((item, index) => index !== action.payload);
     },
     addRow: (state) => {
@@ -87,10 +81,20 @@ export const matrixSlice = createSlice({
           isShowPercent: false
         });
       }
-      state.matrix.push(row);
+
+      state.matrix.splice(state.rows - 2, 0, row);
+
     },
     setRowPercent: (state, action) => {
       state.rowShowPercent = [...action.payload];
+    },
+    changeAverage: (state, action) => {
+
+      state.matrix[state.matrix.length - 1].map((item, index) => {
+        if (index === action.payload.numberOfColumn) {
+          return item.amount = action.payload.amount;
+        }
+      });
     }
   }
 });
@@ -106,6 +110,7 @@ export const matrixSelector = (state) => {
 
 
 export const {
+  changeAverage,
   initValuesField,
   setMatrix,
   incrementCell,

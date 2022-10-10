@@ -2,15 +2,13 @@ import React from "react";
 import "./Matrix.css";
 import { useDispatch } from "react-redux";
 import {
-  addRow,
-  findSimilarOnMoveLeave, incrementCell
+  addRow, rowsDelete
 } from "../../slices/matrixSlice";
 import MatrixCell from "./MatrixCell";
 
 const DrawMatrix = ({
   matrix,
   showPercent,
-  deleteRowOnClick,
   rowShowPercent
 }) => {
   const dispatch = useDispatch();
@@ -32,76 +30,46 @@ const DrawMatrix = ({
         {
           matrix.map((item, indx) => {
             indx++;
-            if (indx !== matrix.length) {
-              return (
-                <tr>
-                  <td>{indx}</td>
+            return (
+              <tr key={indx}>
+                <td>{indx === matrix.length ? "avg" : indx}</td>
+                {
+                  item.length && item.map((cellItem, index) => {
+                    return <MatrixCell
+                      key={cellItem.id}
+                      item={cellItem}
+                      rowShowPercent={rowShowPercent}
+                      index={index}
+                      isAverage={indx === matrix.length}
+                    />;
+                  })
+                }
+                <td className="table table_sum"
+                    onMouseOver={(e) => showPercent(e, item, indx)}
+                    onMouseLeave={(e) => showPercent(e, item, indx)}
+                >
                   {
-                    item.length && item.map((cellItem, index) => {
-                      return <MatrixCell
-                        key={cellItem.id}
-                        item={cellItem}
-                        rowShowPercent={rowShowPercent}
-                        index={index}
-                        isAverage={false}
-                      />;
-                    })
+                    item.reduce((prev, current) => {
+                      return prev + current.amount;
+                    }, 0)
                   }
-                  <td className="table table_sum"
-                      onMouseOver={(e) => showPercent(e, item, indx)}
-                      onMouseLeave={(e) => showPercent(e, item, indx)}
-                  >
-                    {
-                      item.reduce((prev, current) => {
-                        return prev + current.amount;
-                      }, 0)
-                    }
-                  </td>
+                </td>
+                {
+                  indx !== matrix.length &&
                   <td>
                     <button onClick={() => {
-                      deleteRowOnClick(indx);
+                      dispatch(rowsDelete(indx));
                     }}
                             className="btn btn_delete--row">
                       ✖
                     </button>
                   </td>
-                </tr>
-              );
-            }
+                }
+              </tr>
+            );
           })
         }
         </tbody>
-        <tfoot>
-        {
-          matrix.map((item, indx) => {
-            if (indx === matrix.length - 1) {
-              return (
-                <tr>
-                  <td>avg</td>
-                  {
-                    item.map((cellItem, index) => {
-                      return <MatrixCell
-                        key={cellItem.id}
-                        item={cellItem}
-                        rowShowPercent={rowShowPercent}
-                        index={index}
-                        isAverage={true}
-                      />;
-                    })
-                  }
-                  <td className="table table_sum">
-                    {
-                      item.reduce((prev, current) => {
-                        return prev + current.amount;
-                      }, 0)
-                    }
-                  </td>
-                </tr>
-              );
-            }
-          })
-        }
-        </tfoot>
       </table>
       <button onClick={() => {
         dispatch(addRow());

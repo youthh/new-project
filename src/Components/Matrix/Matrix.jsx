@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  addAverageCell,
-  matrixSelector, rowsDelete,
+  changeAverage,
+  matrixSelector,
   setMatrix, setRowPercent, setShowPercent
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
-import { logDOM } from "@testing-library/react";
 
 const Matrix = () => {
   const {
@@ -31,17 +30,12 @@ const Matrix = () => {
     dispatch(setShowPercent({ index, e }));
   };
 
-  let deleteRowOnClick = (index) => {
-    dispatch(rowsDelete(index));
-  };
-
   let generateMatrix = (rows, columns) => {
     let arr = new Array(columns);
-    let rez = 0;
     for (let i = 0; i < rows; i++) {
       arr[i] = [];
       for (let j = 0; j < columns; j++) {
-        // check if it is not  last item of array
+        // checking if it is not  last item of array
         if (i !== rows - 1) {
           arr[i][j] = {
             amount: Math.floor(Math.random() * (999 - 100) + 100),
@@ -56,18 +50,28 @@ const Matrix = () => {
     setAverage(arr);
     dispatch(setMatrix(arr));
   };
-  const setAverage = (arr = matrix) => {
+  const setAverage = (arr) => {
     let rez = 0;
     for (let j = 0; j < columns; j++) {
       for (let k = 0; k < rows; k++) {
+        // counting average
         if (k !== rows - 1) {
           rez += arr[k][j].amount;
         } else {
-          arr[k][j] = {
-            amount: Math.floor(rez / (arr.length - 1)),
-            id: Math.random().toString(16).slice(2),
-            isShowPercent: false
-          };
+          if (arr[arr.length - 1].length !== columns) {
+            // set average during generating of matrix
+            arr[k][j] = {
+              amount: Math.floor(rez / (arr.length - 1)),
+              id: Math.random().toString(16).slice(2),
+              isShowPercent: false
+            };
+          } else {
+            //set average on increment
+            dispatch(changeAverage({
+              amount: Math.floor(rez / (arr.length - 1)),
+              numberOfColumn: j
+            }));
+          }
           rez = 0;
         }
       }
@@ -79,19 +83,21 @@ const Matrix = () => {
     // create matrix in builder
     !matrix.length && generateMatrix(rows, columns);
 
-    //matrix.length && setAverage();
+    matrix.length && setAverage(matrix);
 
-  }, [matrix.length]);
+  }, [matrix.map((i) => {
+    return i.map((i) => {
+      return i.amount;
+    });
+  })]);
+
   return (
-    <div>
-      <DrawMatrix
-        matrix={matrix}
-        dispatch={dispatch}
-        showPercent={showPercent}
-        deleteRowOnClick={deleteRowOnClick}
-        rowShowPercent={rowShowPercent}
-      />
-    </div>
+    <DrawMatrix
+      matrix={matrix}
+      dispatch={dispatch}
+      showPercent={showPercent}
+      rowShowPercent={rowShowPercent}
+    />
   );
 };
 

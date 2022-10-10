@@ -10,11 +10,11 @@ const MatrixCell = ({ item, rowShowPercent, index, isAverage }) => {
   return (
     <td
       key={item.id}
-      onMouseOver={(e) => dispatch(findSimilarOnMoveLeave({
+      onMouseOver={(e) => !isAverage && dispatch(findSimilarOnMoveLeave({
         hoveredCell: item,
         type: e.type
       }))}
-      onMouseLeave={(e) => dispatch(findSimilarOnMoveLeave({
+      onMouseLeave={(e) => !isAverage && dispatch(findSimilarOnMoveLeave({
         hoveredCell: item,
         type: e.type
       }))}

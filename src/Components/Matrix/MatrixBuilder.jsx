@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import "./Matrix.css";
 import { useDispatch } from "react-redux";
-import { initValuesField, setMatrix } from "../../slices/matrixSlice";
+import { initValuesField } from "../../slices/matrixSlice";
 
 const MatrixBuilder = () => {
   let inputColumn = useRef();
