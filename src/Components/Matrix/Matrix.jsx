@@ -3,16 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeAverage,
   matrixSelector,
-  setMatrix, setRowPercent, setShowPercent
+  setMatrix,
+  setRowPercent,
+  setShowPercent,
 } from "../../slices/matrixSlice";
 import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
-  const {
-    columns, rows, matrix, rowShowPercent
-  } = useSelector(matrixSelector);
+  const { columns, rows, matrix, rowShowPercent } = useSelector(matrixSelector);
   const dispatch = useDispatch();
-
 
   let countPercent = (item) => {
     let arr = [];
@@ -20,7 +19,7 @@ const Matrix = () => {
       return prev + curr.amount;
     }, 0);
     for (let j = 0; j < item.length; j++) {
-      arr.push(Math.round(item[j].amount * 100 / sum) + "%");
+      arr.push(Math.round((item[j].amount * 100) / sum) + "%");
     }
     return arr;
   };
@@ -41,8 +40,7 @@ const Matrix = () => {
             amount: Math.floor(Math.random() * (999 - 100) + 100),
             id: Math.random().toString(16).slice(2),
             isShowPercent: false,
-            isActive: false
-
+            isActive: false,
           };
         }
       }
@@ -63,14 +61,16 @@ const Matrix = () => {
             arr[k][j] = {
               amount: Math.floor(rez / (arr.length - 1)),
               id: Math.random().toString(16).slice(2),
-              isShowPercent: false
+              isShowPercent: false,
             };
           } else {
             //set average on increment
-            dispatch(changeAverage({
-              amount: Math.floor(rez / (arr.length - 1)),
-              numberOfColumn: j
-            }));
+            dispatch(
+              changeAverage({
+                amount: Math.floor(rez / (arr.length - 1)),
+                numberOfColumn: j,
+              })
+            );
           }
           rez = 0;
         }
@@ -78,18 +78,18 @@ const Matrix = () => {
     }
   };
 
-
   useEffect(() => {
     // create matrix in builder
     !matrix.length && generateMatrix(rows, columns);
 
     matrix.length && setAverage(matrix);
-
-  }, [matrix.map((i) => {
-    return i.map((i) => {
-      return i.amount;
-    });
-  })]);
+  }, [
+    matrix.map((i) => {
+      return i.map((i) => {
+        return i.amount;
+      });
+    }),
+  ]);
 
   return (
     <DrawMatrix

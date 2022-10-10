@@ -15,15 +15,16 @@ const MatrixBuilder = () => {
     let inputRows = inputRow.current.value;
     let inputCells = inputCell.current.value;
     if (inputColumns && inputRows <= 25) {
-      dispatch(initValuesField({
-        columns: inputColumns,
-        rows: inputRows,
-        cells: inputCells
-      }));
+      dispatch(
+        initValuesField({
+          columns: inputColumns,
+          rows: inputRows,
+          cells: inputCells,
+        })
+      );
     } else {
       alert("max size of matrix 25X25");
     }
-
   };
 
   return (
@@ -32,22 +33,43 @@ const MatrixBuilder = () => {
 
       <div className="box__matrix-field">
         <p className="box__matrix-label">Enter the number of columns</p>
-        <input ref={inputColumn} type="number" step="1" id="theNumber" min="0"
-               max="25" />
+        <input
+          ref={inputColumn}
+          type="number"
+          step="1"
+          id="theNumber"
+          min="0"
+          max="25"
+        />
       </div>
       <div className="box__matrix-field">
         <p className="box__matrix-label">Enter the number of rows</p>
-        <input ref={inputRow} type="number" step="1" id="theNumber" min="1"
-               max="25" />
+        <input
+          ref={inputRow}
+          type="number"
+          step="1"
+          id="theNumber"
+          min="1"
+          max="25"
+        />
       </div>
       <div className="box__matrix-field">
         <p className="box__matrix-label">Enter the number of cells</p>
-        <input ref={inputCell} type="number" step="1" id="theNumber" min="1"
-               max="25" />
+        <input
+          ref={inputCell}
+          type="number"
+          step="1"
+          id="theNumber"
+          min="1"
+          max="25"
+        />
       </div>
 
-      <button onClick={() => createMatrixOnClick()}
-              className="box__matrix--btn">Create
+      <button
+        onClick={() => createMatrixOnClick()}
+        className="box__matrix--btn"
+      >
+        Create
       </button>
     </div>
   );

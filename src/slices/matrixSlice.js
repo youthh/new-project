@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export const matrixSlice = createSlice({
   name: "matrix",
 
@@ -9,15 +8,14 @@ export const matrixSlice = createSlice({
     rows: null,
     cells: null,
     matrix: [],
-    rowShowPercent: []
+    rowShowPercent: [],
   },
 
   reducers: {
     initValuesField: (state, action) => {
       state.columns = parseInt(action.payload.columns);
-      state.rows = ++action.payload.rows;
-      state.cells = action.payload.cells;
-
+      state.rows = parseInt(action.payload.rows) + 1;
+      state.cells = parseInt(action.payload.cells);
     },
     setMatrix: (state, action) => {
       state.matrix = action.payload;
@@ -68,7 +66,9 @@ export const matrixSlice = createSlice({
         state.rows = 0;
         state.columns = 0;
       }
-      state.matrix = state.matrix.filter((item, index) => index !== action.payload);
+      state.matrix = state.matrix.filter(
+        (item, index) => index !== action.payload
+      );
     },
     addRow: (state) => {
       state.rows++;
@@ -76,27 +76,25 @@ export const matrixSlice = createSlice({
       for (let i = 0; i < state.columns; i++) {
         row.push({
           amount: Math.floor(Math.random() * (999 - 100) + 100),
-          id: Math.floor(Math.random() * (1000000)),
+          id: Math.floor(Math.random() * 1000000),
           isActive: false,
-          isShowPercent: false
+          isShowPercent: false,
         });
       }
 
       state.matrix.splice(state.rows - 2, 0, row);
-
     },
     setRowPercent: (state, action) => {
       state.rowShowPercent = [...action.payload];
     },
     changeAverage: (state, action) => {
-
       state.matrix[state.matrix.length - 1].map((item, index) => {
         if (index === action.payload.numberOfColumn) {
-          return item.amount = action.payload.amount;
+          return (item.amount = action.payload.amount);
         }
       });
-    }
-  }
+    },
+  },
 });
 
 export const matrixSelector = (state) => {
@@ -104,10 +102,9 @@ export const matrixSelector = (state) => {
     columns: state.matrixSlice.columns,
     rows: state.matrixSlice.rows,
     matrix: state.matrixSlice.matrix,
-    rowShowPercent: state.matrixSlice.rowShowPercent
+    rowShowPercent: state.matrixSlice.rowShowPercent,
   };
 };
-
 
 export const {
   changeAverage,
@@ -118,7 +115,7 @@ export const {
   setShowPercent,
   rowsDelete,
   addRow,
-  setRowPercent
+  setRowPercent,
 } = matrixSlice.actions;
 
 export default matrixSlice.reducer;
