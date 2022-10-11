@@ -50,7 +50,7 @@ const MatrixCell = ({ item, rowShowPercent, index, isAverage }) => {
             height: rowShowPercent.filter((item, inx) => {
               return index === inx && item;
             }),
-            background: "#6500FFFF",
+            background: "#6500FF",
           }}
         ></div>
       )}

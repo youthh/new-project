@@ -30,7 +30,7 @@ const Matrix = () => {
   };
 
   let generateMatrix = (rows, columns) => {
-    let arr = new Array(columns);
+    let arr = new Array(rows);
     for (let i = 0; i < rows; i++) {
       arr[i] = [];
       for (let j = 0; j < columns; j++) {

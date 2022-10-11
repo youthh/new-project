@@ -8,13 +8,13 @@ const DrawMatrix = ({ matrix, showPercent, rowShowPercent }) => {
   const dispatch = useDispatch();
 
   return (
-    matrix.length && (
+    matrix?.length && (
       <div className="box__matrix-container">
         <table>
           <thead>
             <tr>
               <th>№</th>
-              {matrix[0].map((item, index) => {
+              {matrix[0]?.map((item, index) => {
                 index++;
                 return <th key={index}>{index}</th>;
               })}
@@ -22,7 +22,7 @@ const DrawMatrix = ({ matrix, showPercent, rowShowPercent }) => {
             </tr>
           </thead>
           <tbody>
-            {matrix.map((item, indx) => {
+            {matrix?.map((item, indx) => {
               indx++;
               return (
                 <tr key={indx}>
