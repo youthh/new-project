@@ -7,13 +7,13 @@ import Matrix from "./Components/Matrix/Matrix";
 import { matrixSelector } from "./slices/matrixSlice";
 
 function App() {
-  const { rows } = useSelector(matrixSelector);
+  const { rows: rowsCount } = useSelector(matrixSelector);
 
   return (
     <div className="App">
       <div className="container">
         <div className="inner__app">
-          {rows ? <Matrix /> : <MatrixBuilder />}
+          {rowsCount ? <Matrix /> : <MatrixBuilder />}
         </div>
       </div>
     </div>

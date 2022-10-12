@@ -94,7 +94,6 @@ const Matrix = () => {
   return (
     <DrawMatrix
       matrix={matrix}
-      dispatch={dispatch}
       showPercent={showPercent}
       rowShowPercent={rowShowPercent}
     />
