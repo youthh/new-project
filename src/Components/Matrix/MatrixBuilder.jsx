@@ -6,20 +6,17 @@ import { initValuesField } from "../../slices/matrixSlice";
 const MatrixBuilder = () => {
   let inputColumn = useRef();
   let inputRow = useRef();
-  let inputCell = useRef();
   const dispatch = useDispatch();
 
   /** set size of matrix**/
   const createMatrixOnClick = () => {
     let inputColumns = inputColumn.current.value;
     let inputRows = inputRow.current.value;
-    let inputCells = inputCell.current.value;
     if (inputColumns && inputRows <= 25) {
       dispatch(
         initValuesField({
           columns: inputColumns,
           rows: inputRows,
-          cells: inputCells,
         })
       );
     } else {
@@ -53,18 +50,6 @@ const MatrixBuilder = () => {
           max="25"
         />
       </div>
-      <div className="box__matrix-field">
-        <p className="box__matrix-label">Enter the number of cells</p>
-        <input
-          ref={inputCell}
-          type="number"
-          step="1"
-          id="theNumber"
-          min="1"
-          max="25"
-        />
-      </div>
-
       <button
         onClick={() => createMatrixOnClick()}
         className="box__matrix--btn"

@@ -11,8 +11,8 @@ import DrawMatrix from "./DrawMatrix";
 
 const Matrix = () => {
   const { columns, rows, matrix, rowShowPercent } = useSelector(matrixSelector);
+  let isIncrement = useSelector((state) => state.matrixSlice.isIncrement);
   const dispatch = useDispatch();
-
   let countPercent = (item) => {
     let arr = [];
     let sum = item.reduce((prev, curr) => {
@@ -81,15 +81,8 @@ const Matrix = () => {
   useEffect(() => {
     // create matrix in builder
     !matrix.length && generateMatrix(rows, columns);
-
     matrix.length && setAverage(matrix);
-  }, [
-    matrix.map((i) => {
-      return i.map((i) => {
-        return i.amount;
-      });
-    }),
-  ]);
+  }, [matrix.length, isIncrement]);
 
   return (
     <DrawMatrix

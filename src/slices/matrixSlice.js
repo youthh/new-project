@@ -6,7 +6,7 @@ export const matrixSlice = createSlice({
   initialState: {
     columns: null,
     rows: null,
-    cells: null,
+    isIncrement: false,
     matrix: [],
     rowShowPercent: [],
   },
@@ -28,6 +28,7 @@ export const matrixSlice = createSlice({
           }
         });
       });
+      state.isIncrement = !state.isIncrement;
     },
     findSimilarOnMoveLeave: (state, action) => {
       state.matrix.map((i, inx) => {
@@ -81,7 +82,6 @@ export const matrixSlice = createSlice({
           isShowPercent: false,
         });
       }
-
       state.matrix.splice(state.rows - 2, 0, row);
     },
     setRowPercent: (state, action) => {
