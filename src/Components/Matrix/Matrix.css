@@ -1,4 +1,13 @@
-.box__matrix{
+
+.box__matrix-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+.box__matrix {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,11 +17,11 @@
     margin-top: 30px;
 }
 
-.box__matrix--title{
+.box__matrix--title {
     color: #fff;
 }
 
-.box__matrix-field{
+.box__matrix-field {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,47 +29,92 @@
     width: 100%;
 }
 
-.box__matrix-label{
+.box__matrix-label {
     margin-right: 10px;
     color: #fff;
 }
 
-.box__matrix{
+.box__matrix {
     background-color: #8148e3;
 
 }
 
-.box__matrix--btn{
+.box__matrix--btn {
     padding: 6px 10px;
     border-radius: 10px;
     outline: none;
 }
 
-.table{
+.table {
     border-radius: 8px;
-    cursor: pointer;
+    text-align: center;
     padding: 10px;
+    width: 40px;
     color: #fff;
+    position: relative;
+
 }
 
-.table_td{
+.table_td {
     background-color: #8f5ed9;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    font-weight: 500;
 }
 
-.table_td:hover{
+.table.table_td--percent {
+    color: #a569ff;
+    background: none;
+}
+
+.percent__height {
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    z-index: -1;
+    position: absolute;
+}
+
+.table_td:hover {
     background-color: #6500ff;
+
 }
 
-.table_head{
+.table_head {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-.table_sum{
+.table_sum {
     background-color: #7016ff;
 }
 
-.active{
+.active {
     background-color: #7000bb;
+}
+
+
+.btn {
+    outline: none;
+    background-color: #6500ff;
+    color: #fff;
+    border: none;
+    padding: 7px 10px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.btn__add--row {
+    margin-top: 15px;
+    display: block;
+}
+
+
+.btn_delete--row {
+    width: 38px;
+    text-align: center;
 }
